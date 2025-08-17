@@ -1,5 +1,5 @@
-@use '../../../shared/styles/_variables' as *;
-@use '../../../shared/styles/_mixins' as *;
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
 
 .product-list-container { min-height: 100vh; background-color: $bg-light; }
 
@@ -7,10 +7,7 @@
   background: $bg-gradient-primary; color: white; padding: 30px 0; box-shadow: $shadow-md;
   @include mobile { padding: 20px 0; }
   .header-content {
-    @include container; 
-    & {
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    @include container; display: flex; justify-content: space-between; align-items: center;
     @include mobile { flex-direction: column; gap: 20px; text-align: center; }
     h1 { margin: 0; @include text-responsive($font-size-2xl, $font-size-xl, $font-size-lg); }
   }
@@ -20,29 +17,28 @@
     .btn {
       display: inline-flex; align-items: center; gap: 5px; padding: 10px 20px;
       border-radius: $border-radius-md; text-decoration: none; font-weight: 500;
-      font-size: $font-size-sm;
+      font-size: $font-size-sm; transition: all $transition-fast;
       @include mobile { font-size: $font-size-xs; padding: 8px 16px; }
     }
     .btn-primary { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); }
+    .btn-primary:hover { background: rgba(255,255,255,0.3); }
     .btn-outline-light { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); }
+    .btn-outline-light:hover { background: rgba(255,255,255,0.1); }
   }
 }
 
 .search-controls {
-  @include container; 
-  & {
-    background: white; padding: 20px; margin: -15px auto 30px;
-    border-radius: $border-radius-lg; box-shadow: $shadow-sm; display: flex; gap: 15px;
-    align-items: center; flex-wrap: wrap;
-  }
+  @include container; background: white; padding: 20px; margin: -15px auto 30px;
+  border-radius: $border-radius-lg; box-shadow: $shadow-sm; display: flex; gap: 15px;
+  align-items: center; flex-wrap: wrap;
   @include mobile { flex-direction: column; align-items: stretch; gap: 10px; margin: -10px auto 20px; padding: 15px; }
   .search-group {
     display: flex; gap: 10px; align-items: center; min-width: 250px;
     @include mobile { min-width: auto; flex-direction: column; align-items: stretch; }
   }
   .form-control {
-    border: 1px solid $color-border; border-radius: $border-radius-md; padding: 8px 12px;
-    font-size: $font-size-sm;
+    border: 1px solid $border-color; border-radius: $border-radius-md; padding: 8px 12px;
+    font-size: $font-size-sm; transition: border-color $transition-fast;
     &:focus { outline: none; border-color: $color-primary; }
   }
   .btn { padding: 8px 16px; font-size: $font-size-sm; }
@@ -50,19 +46,15 @@
     display: flex; gap: 5px; margin-left: auto;
     @include mobile { margin-left: 0; justify-content: center; }
     .btn {
-      padding: 8px 12px; border: 1px solid $color-border; background: white;
-      border-radius: $border-radius-md; color: $color-text;
+      padding: 8px 12px; border: 1px solid $border-color; background: white;
+      border-radius: $border-radius-md; color: $color-text; transition: all $transition-fast;
     }
     .btn.active { background: $color-primary; color: white; border-color: $color-primary; }
+    .btn:hover:not(.active) { background: $bg-light; }
   }
 }
 
-.products-content { 
-  @include container; 
-  & {
-    padding: 30px 20px; 
-  }
-}
+.products-content { @include container; padding: 30px 20px; }
 
 .grid-container {
   display: grid; gap: 25px; width: 100%; max-width: 1200px; justify-items: center;
@@ -75,25 +67,30 @@
 
 .product-card {
   background: white; border-radius: $border-radius-md; box-shadow: $shadow-sm;
-  overflow: hidden; width: 100%; max-width: 350px; min-height: 400px;
-  display: flex; flex-direction: column;
+  overflow: hidden; transition: all $transition-normal; width: 100%; max-width: 350px;
+  min-height: 400px; display: flex; flex-direction: column;
   &:hover { box-shadow: $shadow-md; transform: translateY(-2px); }
 }
 .product-card .product-image {
   width: 100%; height: 200px; overflow: hidden; position: relative;
-  img { width: 100%; height: 100%; object-fit: cover; }
+  img { width: 100%; height: 100%; object-fit: cover; transition: transform $transition-normal; }
+  &:hover img { transform: scale(1.05); }
 }
 .product-card .discount-badge {
   position: absolute; top: 10px; left: 10px; background: $color-danger;
   color: white; padding: 4px 8px; border-radius: $border-radius-sm;
-  font-size: $font-size-xs; font-weight: 600;
+  font-size: $font-size-xs; font-weight: 600; box-shadow: $shadow-sm;
 }
-.product-card .product-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.product-card .product-info {
+  padding: 20px; flex: 1; display: flex; flex-direction: column;
+}
 .product-card .product-name {
-  font-size: $font-size-lg; font-weight: 600; margin-bottom: 8px; color: $color-text;
+  font-size: $font-size-lg; font-weight: 600; margin-bottom: 8px;
+  color: $color-text; line-height: 1.3;
 }
 .product-card .product-description {
-  font-size: $font-size-sm; color: $color-text-secondary; margin-bottom: 15px; flex: 1;
+  font-size: $font-size-sm; color: $color-text-secondary;
+  margin-bottom: 15px; line-height: 1.4; flex: 1;
 }
 .product-card .product-details { margin-bottom: 15px; }
 .product-card .price-info { margin-bottom: 10px; }
@@ -107,12 +104,27 @@
   font-size: $font-size-sm; color: $color-text-secondary;
 }
 .product-card .account, .product-card .unit { display: flex; justify-content: space-between; }
-.product-card .product-actions { display: flex; gap: 8px; margin-top: auto; }
+.product-card .product-actions {
+  display: flex; gap: 8px; margin-top: auto;
+}
+.product-card .product-actions .btn {
+  flex: 1; padding: 8px 12px; border-radius: $border-radius-md;
+  text-decoration: none; font-size: $font-size-sm; font-weight: 500;
+  text-align: center; transition: all $transition-fast; border: 1px solid;
+}
+
+.btn-info { background: $color-info; color: white; border-color: $color-info; }
+.btn-info:hover { background: darken($color-info, 10%); }
+.btn-warning { background: $color-warning; color: white; border-color: $color-warning; }
+.btn-warning:hover { background: darken($color-warning, 10%); }
+.btn-danger { background: $color-danger; color: white; border-color: $color-danger; }
+.btn-danger:hover { background: darken($color-danger, 10%); }
 
 .list-container { width: 100%; max-width: 1200px; }
 .product-list-item {
   background: white; border-radius: $border-radius-md; box-shadow: $shadow-sm;
   margin-bottom: 20px; padding: 20px; display: flex; gap: 20px;
+  transition: all $transition-normal;
   &:hover { box-shadow: $shadow-md; }
   @include mobile { flex-direction: column; gap: 15px; padding: 15px; }
 }
@@ -136,7 +148,8 @@
   font-size: $font-size-xl; font-weight: 600; margin-bottom: 8px; color: $color-text;
 }
 .product-list-item .product-description {
-  font-size: $font-size-sm; color: $color-text-secondary; margin-bottom: 12px;
+  font-size: $font-size-sm; color: $color-text-secondary;
+  margin-bottom: 12px; line-height: 1.4;
 }
 .product-list-item .product-meta {
   display: flex; gap: 20px; flex-wrap: wrap; font-size: $font-size-sm;
@@ -156,15 +169,11 @@
   display: flex; flex-direction: column; gap: 8px; min-width: 120px;
   @include mobile { flex-direction: row; min-width: auto; }
 }
-
-.btn {
-  padding: 8px 12px; border-radius: $border-radius-md; text-decoration: none;
-  font-size: $font-size-sm; font-weight: 500; text-align: center; border: 1px solid;
+.product-list-item .product-actions .btn {
+  padding: 8px 16px; border-radius: $border-radius-md; text-decoration: none;
+  font-size: $font-size-sm; font-weight: 500; text-align: center;
+  transition: all $transition-fast; border: 1px solid;
 }
-.product-card .product-actions .btn { flex: 1; }
-.btn-info { background: $color-info; color: white; border-color: $color-info; }
-.btn-warning { background: $color-warning; color: white; border-color: $color-warning; }
-.btn-danger { background: $color-danger; color: white; border-color: $color-danger; }
 
 .loading-state, .empty-state, .error-state {
   text-align: center; padding: 60px 20px; color: $color-text-secondary;
