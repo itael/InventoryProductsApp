@@ -1,0 +1,252 @@
+@use '../../shared/styles/_variables' as *;
+@use '../../shared/styles/_mixins' as *;
+
+.dashboard {
+  padding: 0; min-height: 100vh; background-color: $color-bg-secondary;
+}
+
+.dashboard-content {
+  max-width: 1200px; margin: 0 auto; padding: $space-6 $space-4;
+  @include mobile { padding: $space-4 $space-3; }
+}
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem; margin-bottom: 2rem;
+  @include mobile { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
+}
+
+.stat-card, .stats-card {
+  background: $color-white; border-radius: $border-radius-lg; padding: $space-6;
+  box-shadow: $shadow; border: 1px solid $color-border; display: flex;
+  align-items: center; gap: $space-4;
+  @include mobile { padding: $space-4; gap: $space-3; }
+
+  &:hover { box-shadow: $shadow-md; transform: translateY(-2px); }
+}
+
+.stats-icon {
+  width: 48px; height: 48px; border-radius: $border-radius; display: flex;
+  align-items: center; justify-content: center; font-size: $font-size-lg;
+  @include mobile { width: 40px; height: 40px; font-size: $font-size-base; }
+}
+
+.stats-content {
+  flex: 1;
+}
+
+.stats-value, .stat-card h2 {
+  font-size: $font-size-3xl; font-weight: $font-weight-bold; color: $color-text;
+  margin: 0 0 $space-2 0; line-height: 1;
+  @include mobile { font-size: $font-size-2xl; }
+}
+
+.stat-label, .stats-label, .stat-card p {
+  font-size: $font-size-sm; color: $color-text-secondary; margin: 0;
+  font-weight: $font-weight-medium;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.stats-change {
+  display: flex; align-items: center; gap: $space-1; font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  @include mobile { font-size: $font-size-xs; }
+  
+  &.positive { color: $color-success; }
+  &.negative { color: $color-danger; }
+  &.neutral { color: $color-text-secondary; }
+  
+  i { font-size: $font-size-xs; }
+}
+
+.stats-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: $space-4;
+  @include mobile { flex-direction: column; align-items: flex-start; gap: $space-2; }
+}
+
+.stats-title {
+  font-size: $font-size-sm; color: $color-text-secondary; font-weight: $font-weight-medium;
+  margin: 0; text-transform: uppercase; letter-spacing: 0.5px;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.stat-card.products .stats-icon { background: rgba($color-primary, 0.1); color: $color-primary; }
+.stat-card.users .stats-icon { background: rgba($color-info, 0.1); color: $color-info; }
+.stat-card.sales .stats-icon { background: rgba($color-success, 0.1); color: $color-success; }
+.stat-card.revenue .stats-icon { background: rgba($color-warning, 0.1); color: $color-warning; }
+
+.dashboard-header {
+  background: linear-gradient(135deg, $color-primary, darken($color-primary, 10%));
+  color: $color-white; padding: $space-5 0; box-shadow: $shadow-md;
+  @include mobile { padding: $space-4 0; }
+}
+
+.header-content {
+  max-width: 1200px; margin: 0 auto; padding: 0 $space-4;
+  @include mobile { padding: 0 $space-3; }
+}
+
+.dashboard-header h1 {
+  font-size: $font-size-2xl; font-weight: $font-weight-bold; margin: 0 0 $space-2;
+  @include mobile { font-size: $font-size-xl; }
+}
+
+.header-subtitle {
+  font-size: $font-size-base; opacity: 0.9; margin: 0;
+  @include mobile { font-size: $font-size-sm; }
+}
+
+.header-actions {
+  margin-top: $space-4; display: flex; gap: $space-3; flex-wrap: wrap;
+  @include mobile { margin-top: $space-3; gap: $space-2; }
+}
+
+.header-actions .btn {
+  background: rgba($color-white, 0.2); color: $color-white; border: 1px solid rgba($color-white, 0.3);
+  padding: $space-2 $space-4; border-radius: $border-radius; text-decoration: none;
+  font-weight: $font-weight-medium; display: flex; align-items: center; gap: $space-2;
+  @include mobile { padding: $space-3; font-size: $font-size-sm; flex: 1; justify-content: center; min-height: 44px; }
+
+  &:hover { background: rgba($color-white, 0.3); border-color: rgba($color-white, 0.5); transform: translateY(-1px); }
+}
+
+.dashboard-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $space-6; margin-bottom: $space-8;
+  @include mobile { grid-template-columns: 1fr; gap: $space-4; margin-bottom: $space-6; }
+}
+
+.recent-products {
+  background: $color-white; border-radius: $border-radius-lg; padding: $space-6;
+  box-shadow: $shadow; border: 1px solid $color-border; margin-bottom: $space-6;
+  @include mobile { padding: $space-4; margin-bottom: $space-4; }
+}
+
+.section-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: $space-4;
+  @include mobile { flex-direction: column; align-items: flex-start; gap: $space-2; }
+}
+
+.section-header h3 {
+  font-size: $font-size-lg; font-weight: $font-weight-semibold; margin: 0; color: $color-text;
+  @include mobile { font-size: $font-size-base; }
+}
+
+.view-all {
+  color: $color-primary; text-decoration: none; font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  &:hover { color: darken($color-primary, 10%); }
+}
+
+.products-list {
+  display: flex; flex-direction: column; gap: $space-3;
+}
+
+.product-item {
+  display: flex; align-items: center; gap: $space-3; padding: $space-3;
+  border: 1px solid $color-border; border-radius: $border-radius;
+  @include mobile { gap: $space-2; padding: $space-2; }
+
+  &:hover { background: $color-bg-secondary; border-color: $color-primary; }
+}
+
+.product-image {
+  width: 48px; height: 48px; border-radius: $border-radius; background: $color-bg-secondary;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  @include mobile { width: 40px; height: 40px; }
+}
+
+.product-info {
+  flex: 1; min-width: 0;
+}
+
+.product-name {
+  font-weight: $font-weight-medium; margin: 0 0 $space-1; color: $color-text;
+  font-size: $font-size-sm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.product-price {
+  font-size: $font-size-sm; color: $color-success; font-weight: $font-weight-semibold;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.quick-actions {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-4; margin-bottom: $space-6;
+  @include mobile { grid-template-columns: 1fr; gap: $space-3; margin-bottom: $space-4; }
+}
+
+.action-card {
+  background: $color-white; border-radius: $border-radius-lg; padding: $space-5;
+  text-align: center; box-shadow: $shadow; border: 1px solid $color-border;
+  text-decoration: none; color: $color-text;
+  @include mobile { padding: $space-4; }
+
+  &:hover { box-shadow: $shadow-md; transform: translateY(-2px); color: $color-primary; text-decoration: none; }
+}
+
+.action-icon {
+  width: 64px; height: 64px; margin: 0 auto $space-3; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: $font-size-2xl;
+  @include mobile { width: 48px; height: 48px; font-size: $font-size-xl; }
+}
+
+.action-title {
+  font-size: $font-size-base; font-weight: $font-weight-semibold; margin: 0 0 $space-2;
+  @include mobile { font-size: $font-size-sm; }
+}
+
+.action-description {
+  font-size: $font-size-sm; color: $color-text-secondary; margin: 0;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.action-card.add-product .action-icon { background: rgba($color-success, 0.1); color: $color-success; }
+.action-card.manage-users .action-icon { background: rgba($color-info, 0.1); color: $color-info; }
+.action-card.view-reports .action-icon { background: rgba($color-warning, 0.1); color: $color-warning; }
+.action-card.settings .action-icon { background: rgba($color-text-secondary, 0.1); color: $color-text-secondary; }
+
+.recent-activity {
+  background: $color-white; border-radius: $border-radius-lg; padding: $space-6;
+  box-shadow: $shadow; border: 1px solid $color-border;
+  @include mobile { padding: $space-4; }
+}
+
+.activity-list .activity-item {
+  display: flex; align-items: center; gap: $space-3; padding: $space-3 0;
+  border-bottom: 1px solid $color-border;
+  @include mobile { gap: $space-2; padding: $space-2 0; }
+
+  &:last-child { border-bottom: none; }
+}
+
+.activity-icon {
+  width: 32px; height: 32px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0; font-size: $font-size-sm;
+  @include mobile { width: 28px; height: 28px; font-size: $font-size-xs; }
+}
+
+.activity-content {
+  flex: 1; min-width: 0;
+}
+
+.activity-text {
+  font-size: $font-size-sm; margin: 0 0 $space-1; color: $color-text;
+  @include mobile { font-size: $font-size-xs; }
+}
+
+.activity-time {
+  font-size: $font-size-xs; color: $color-text-secondary; margin: 0;
+}
+
+.activity-item.product .activity-icon { background: rgba($color-primary, 0.1); color: $color-primary; }
+.activity-item.user .activity-icon { background: rgba($color-info, 0.1); color: $color-info; }
+.activity-item.sale .activity-icon { background: rgba($color-success, 0.1); color: $color-success; }
+
+.dashboard-container { background: $color-bg-secondary; min-height: 100vh; }
+
+@include mobile {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: block !important; }
+}
