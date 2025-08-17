@@ -1,0 +1,197 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.language-selector {
+  position: relative;
+  display: inline-block;
+  
+  .language-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: $border-radius;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 110px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    @include mobile {
+      padding: 10px 14px;
+      font-size: 16px;
+      min-width: 120px;
+    }
+
+    .current-language {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+
+      .flag {
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .arrow {
+      font-size: 10px;
+      transition: transform 0.2s ease;
+      color: rgba(255, 255, 255, 0.7);
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .language-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    box-shadow: $shadow-lg;
+    z-index: 1000;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.2s ease;
+
+    @include mobile {
+      position: fixed;
+      top: auto;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      border-radius: $border-radius-lg;
+      box-shadow: $shadow-xl;
+    }
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .language-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      color: $color-text;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      position: relative;
+
+      @include mobile {
+        padding: 16px 20px;
+        font-size: 16px;
+      }
+
+      &:hover {
+        background: $color-bg-hover;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $color-border;
+      }
+
+      &.active {
+        background: rgba($color-primary, 0.1);
+        color: $color-primary;
+        font-weight: 600;
+
+        &:hover {
+          background: rgba($color-primary, 0.15);
+        }
+      }
+
+      .flag {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .name {
+        flex: 1;
+      }
+
+      .check {
+        color: $color-success;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.language-backdrop {
+  display: none;
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+
+    &.show {
+      display: block;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .language-selector {
+    .language-toggle {
+      border: 2px solid white;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .language-dropdown {
+      border: 2px solid $color-text;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .language-selector {
+    .language-toggle,
+    .language-dropdown,
+    .language-option,
+    .language-backdrop {
+      transition: none;
+    }
+  }
+}

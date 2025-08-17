@@ -1,0 +1,131 @@
+<div class="dashboard">
+  <!-- CRUD Menu Bar -->
+  <app-menu-bar></app-menu-bar>
+  
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>{{ 'dashboard.welcome' | translate }}</h1>
+      <div class="user-info" *ngIf="currentUser$ | async as user">
+        <span>Welcome, {{ user.firstName }} {{ user.lastName }}</span>
+        <button class="logout-btn" (click)="logout()">{{ 'nav.logout' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Stats Cards -->
+    <div class="stats-grid" *ngIf="stats$ | async as stats">
+      <div class="stat-card products">
+        <div class="stat-icon">🍦</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalProducts }}</h3>
+          <p>{{ 'dashboard.stats.products' | translate }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card roles">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalRoles }}</h3>
+          <p>{{ 'dashboard.stats.roles' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card users">
+        <div class="stat-icon">👤</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalUsers }}</h3>
+          <p>{{ 'dashboard.stats.users' | translate }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card revenue">
+        <div class="stat-icon">💰</div>
+        <div class="stat-info">
+          <h3>${{ stats.totalRevenue | number:'1.2-2' }}</h3>
+          <p>{{ 'dashboard.stats.revenue' | translate }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card discount">
+        <div class="stat-icon">🏷️</div>
+        <div class="stat-info">
+          <h3>{{ stats.averageDiscount | number:'1.1-1' }}%</h3>
+          <p>{{ 'dashboard.stats.discount' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Products -->
+    <div class="recent-products" *ngIf="recentProducts$ | async as products">
+      <h2>{{ 'dashboard.recent.products' | translate }}</h2>
+      <div class="products-table">
+        <div class="table-header">
+          <div class="col">{{ 'fields.name' | translate }}</div>
+          <div class="col">{{ 'fields.price' | translate }}</div>
+          <div class="col">Discount</div>
+          <div class="col">{{ 'fields.unit' | translate }}</div>
+          <div class="col">{{ 'fields.actions' | translate }}</div>
+        </div>
+        
+        <div class="table-row" *ngFor="let product of products">
+          <div class="col">{{ product.name }}</div>
+          <div class="col">${{ product.price | number:'1.2-2' }}</div>
+          <div class="col">{{ product.discount }}%</div>
+          <div class="col">{{ product.unitOfMeasurement }}</div>
+          <div class="col">
+            <a [routerLink]="['/products', product.id]" class="btn-view">{{ 'actions.view' | translate }}</a>
+            <a [routerLink]="['/products', product.id, 'edit']" class="btn-edit"
+               *ngIf="(hasPermission('products_write') | async)">{{ 'actions.edit' | translate }}</a>
+          </div>
+        </div>
+        
+        <div class="table-empty" *ngIf="products.length === 0">
+          <p>{{ 'products.empty.title' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h2>{{ 'dashboard.quick.actions' | translate }}</h2>
+      <div class="actions-grid">
+        <a routerLink="/products/create" class="action-card" 
+           *ngIf="(hasPermission('products_write') | async)">
+          <div class="action-icon">➕</div>
+          <div class="action-text">{{ 'dashboard.actions.add.product' | translate }}</div>
+        </a>
+        
+        <a routerLink="/roles/create" class="action-card"
+           *ngIf="(hasPermission('roles_write') | async)">
+          <div class="action-icon">🛡️</div>
+          <div class="action-text">{{ 'dashboard.actions.create.role' | translate }}</div>
+        </a>
+
+        <a routerLink="/users/create" class="action-card"
+           *ngIf="(hasPermission('users_write') | async)">
+          <div class="action-icon">👤</div>
+          <div class="action-text">{{ 'dashboard.actions.add.user' | translate }}</div>
+        </a>
+        
+        <a routerLink="/products" class="action-card"
+           *ngIf="(hasPermission('products_read') | async)">
+          <div class="action-icon">📋</div>
+          <div class="action-text">{{ 'dashboard.actions.view.inventory' | translate }}</div>
+        </a>
+        
+        <a routerLink="/roles" class="action-card"
+           *ngIf="(hasPermission('roles_read') | async)">
+          <div class="action-icon">⚙️</div>
+          <div class="action-text">{{ 'dashboard.actions.manage.roles' | translate }}</div>
+        </a>
+
+        <a routerLink="/users" class="action-card"
+           *ngIf="(hasPermission('users_read') | async)">
+          <div class="action-icon">👥</div>
+          <div class="action-text">{{ 'dashboard.actions.manage.users' | translate }}</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<div class="product-list-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>🍦 {{ 'products.title' | translate }}</h1>
+      <div class="header-actions">
+        <a routerLink="/products/create" class="btn btn-primary" 
+           *ngIf="(hasPermission('products.create') | async)">
+          ➕ {{ 'products.addProduct' | translate }}
+        </a>
+        <a routerLink="/dashboard" class="btn btn-secondary">
+          ← {{ 'common.backToDashboard' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-section">
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        [placeholder]="'products.searchPlaceholder' | translate"
+        class="search-input"
+      />
+      <button class="search-btn" (click)="onSearch()">
+        🔍 {{ 'common.search' | translate }}
+      </button>
+      
+      <!-- View Mode Toggle -->
+      <div class="view-toggle">
+        <button 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'grid'"
+          (click)="toggleViewMode()"
+          [title]="'products.gridView' | translate">
+          ⊞ {{ 'products.grid' | translate }}
+        </button>
+        <button 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'list'"
+          (click)="toggleViewMode()"
+          [title]="'products.listView' | translate">
+          ☰ {{ 'products.list' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p>{{ 'products.loadingProducts' | translate }}</p>
+  </div>
+
+  <!-- Products Grid View -->
+  <div class="products-grid" *ngIf="(products$ | async) as products; else emptyState" [class.hidden]="viewMode !== 'grid'">
+    <div class="grid-container">
+      <div class="product-card" *ngFor="let product of products; trackBy: trackByProductId">
+        <div class="product-header">
+          <h3>{{ product.name }}</h3>
+          <div class="product-account">{{ product.account }}</div>
+        </div>
+      
+      <div class="product-body">
+        <div class="product-content">
+          <p class="product-description">{{ product.description }}</p>
+          
+          <div class="price-section">
+            <div class="current-price">${{ product.price | number:'1.2-2' }}</div>
+            <div class="original-price" *ngIf="product.discount > 0">
+              <span class="crossed">${{ product.originalPrice | number:'1.2-2' }}</span>
+              <span class="discount">-{{ product.discount | number:'1.1-1' }}%</span>
+            </div>
+          </div>
+          
+          <div class="product-meta">
+            <div class="unit">📦 {{ product.unitOfMeasurement }}</div>
+            <div class="date">📅 {{ product.updatedAt | date:'short' }}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="product-actions">
+        <a [routerLink]="['/products', product.id]" class="btn btn-info btn-sm">
+          👁️ {{ 'common.view' | translate }}
+        </a>
+        <a [routerLink]="['/products/edit', product.id]" class="btn btn-warning btn-sm"
+           *ngIf="(hasPermission('products.update') | async)">
+          ✏️ {{ 'common.edit' | translate }}
+        </a>
+        <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)"
+                *ngIf="(hasPermission('products.delete') | async)">
+          🗑️ {{ 'common.delete' | translate }}
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Products List View -->
+  <div class="products-list" *ngIf="(products$ | async) as products; else emptyState" [class.hidden]="viewMode !== 'list'">
+    <div class="list-container">
+      <!-- Table Header -->
+      <div class="table-header">
+        <div class="col-name">{{ 'products.product' | translate }}</div>
+        <div class="col-account">{{ 'products.account' | translate }}</div>
+        <div class="col-description">{{ 'products.description' | translate }}</div>
+        <div class="col-price">{{ 'products.price' | translate }}</div>
+        <div class="col-unit">{{ 'products.unit' | translate }}</div>
+        <div class="col-date">{{ 'products.updated' | translate }}</div>
+        <div class="col-actions">{{ 'common.actions' | translate }}</div>
+      </div>
+      
+      <!-- Product Rows -->
+      <div class="product-row" *ngFor="let product of products; trackBy: trackByProductId">
+        <div class="col-name">
+          <span class="mobile-label">{{ 'products.product' | translate }}:</span>
+          <h3 class="product-title">{{ product.name }}</h3>
+        </div>
+        
+        <div class="col-account">
+          <span class="mobile-label">{{ 'products.account' | translate }}:</span>
+          <span class="product-account-badge">{{ product.account }}</span>
+        </div>
+        
+        <div class="col-description">
+          <span class="mobile-label">{{ 'products.description' | translate }}:</span>
+          <p class="product-description-list">{{ product.description }}</p>
+        </div>
+        
+        <div class="col-price">
+          <span class="mobile-label">{{ 'products.price' | translate }}:</span>
+          <span class="current-price">${{ product.price | number:'1.2-2' }}</span>
+          <div class="original-price-info" *ngIf="product.discount > 0">
+            <span class="crossed">${{ product.originalPrice | number:'1.2-2' }}</span>
+            <span class="discount">-{{ product.discount | number:'1.1-1' }}%</span>
+          </div>
+        </div>
+        
+        <div class="col-unit">
+          <span class="mobile-label">{{ 'products.unit' | translate }}:</span>
+          <span class="unit">{{ product.unitOfMeasurement }}</span>
+        </div>
+        
+        <div class="col-date">
+          <span class="mobile-label">{{ 'products.updated' | translate }}:</span>
+          <span class="date">{{ product.updatedAt | date:'short' }}</span>
+        </div>
+        
+        <div class="col-actions">
+          <span class="mobile-label">{{ 'common.actions' | translate }}:</span>
+          <div class="product-actions-list">
+            <a [routerLink]="['/products', product.id]" class="btn btn-info btn-sm" [title]="'common.view' | translate">
+              👁️
+            </a>
+            <a [routerLink]="['/products/edit', product.id]" class="btn btn-warning btn-sm"
+               *ngIf="(hasPermission('products.update') | async)" [title]="'common.edit' | translate">
+              ✏️
+            </a>
+            <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)"
+                    *ngIf="(hasPermission('products.delete') | async)" [title]="'common.delete' | translate">
+              🗑️
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <ng-template #emptyState>
+    <div class="empty-state" *ngIf="!isLoading">
+      <div class="empty-icon">🍦</div>
+      <h3>{{ 'products.noProductsFound' | translate }}</h3>
+      <p *ngIf="!searchQuery">{{ 'products.createFirstProduct' | translate }}</p>
+      <p *ngIf="searchQuery">{{ 'products.adjustSearchCriteria' | translate }}</p>
+      <a routerLink="/products/create" class="btn btn-primary"
+         *ngIf="!searchQuery && (hasPermission('products.create') | async)">
+        ➕ {{ 'products.createFirstProductButton' | translate }}
+      </a>
+      <button class="btn btn-secondary" (click)="searchQuery=''; onSearch()" *ngIf="searchQuery">
+        🔄 {{ 'common.clearSearch' | translate }}
+      </button>
+    </div>
+  </ng-template>
+</div>

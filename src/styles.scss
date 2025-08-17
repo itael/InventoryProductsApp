@@ -1,0 +1,556 @@
+/* Global styles for Inventory Products App */
+
+@use 'sass:math';
+// Import shared styles
+@use './app/shared/styles/variables' as *;
+@use './app/shared/styles/mixins' as *;
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+
+  @include mobile {
+    font-size: 14px;
+  }
+
+  @include mobile-lg {
+    font-size: 15px;
+  }
+}
+
+body {
+  height: 100%;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $gray-800;
+  background-color: $bg-light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  margin-bottom: $space-4;
+}
+
+h1 {
+  @include text-responsive($font-size-3xl, $font-size-2xl, $font-size-xl);
+}
+
+h2 {
+  @include text-responsive($font-size-2xl, $font-size-xl, $font-size-lg);
+}
+
+h3 {
+  @include text-responsive($font-size-xl, $font-size-lg, $font-size-md);
+}
+
+h4 {
+  @include text-responsive($font-size-lg, $font-size-md, $font-size-base);
+}
+
+h5 {
+  @include text-responsive($font-size-md, $font-size-base, $font-size-sm);
+}
+
+h6 {
+  @include text-responsive($font-size-base, $font-size-sm, $font-size-xs);
+}
+
+p {
+  margin-bottom: $space-4;
+  @include text-responsive;
+}
+
+/* Links */
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: color $transition-normal;
+
+  &:hover {
+    color: $primary-dark;
+  }
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-weight: $font-weight-medium;
+  transition: all $transition-normal;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  
+  @include button-responsive;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  &.btn-primary {
+    background: $primary;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $primary-dark;
+    }
+  }
+
+  &.btn-secondary {
+    background: $secondary;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $secondary-dark;
+    }
+  }
+
+  &.btn-success {
+    background: $success;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $success-dark;
+    }
+  }
+
+  &.btn-danger {
+    background: $danger;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $danger-dark;
+    }
+  }
+
+  &.btn-warning {
+    background: $warning;
+    color: $gray-800;
+
+    &:hover:not(:disabled) {
+      background: $warning-dark;
+    }
+  }
+
+  &.btn-info {
+    background: $info;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $info-dark;
+    }
+  }
+
+  &.btn-sm {
+    padding: $space-2 $space-4;
+    font-size: $font-size-sm;
+
+    @include mobile {
+      padding: $space-2 $space-3;
+    }
+  }
+
+  &.btn-lg {
+    padding: $space-4 $space-8;
+    font-size: $font-size-lg;
+
+    @include mobile {
+      padding: $space-3 $space-6;
+      font-size: $font-size-base;
+    }
+  }
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: $space-5;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $space-2;
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+  @include text-responsive($font-size-sm, $font-size-sm, $font-size-xs);
+}
+
+.form-control {
+  width: 100%;
+  padding: $space-3 $space-4;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $gray-800;
+  background-color: white;
+  transition: border-color $transition-normal, box-shadow $transition-normal;
+
+  @include mobile {
+    padding: $space-3;
+    font-size: $font-size-sm;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 2px rgba($primary, 0.2);
+  }
+
+  &.is-invalid {
+    border-color: $danger;
+  }
+
+  &.is-valid {
+    border-color: $success;
+  }
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+
+  @include mobile {
+    min-height: 80px;
+  }
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.form-text {
+  margin-top: $space-1;
+  font-size: $font-size-xs;
+  color: $gray-600;
+  line-height: $line-height-normal;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: $space-1;
+  font-size: $font-size-xs;
+  color: $danger;
+}
+
+.valid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: $space-1;
+  font-size: $font-size-xs;
+  color: $success;
+}
+
+/* Tables */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @include mobile {
+    border-radius: $border-radius;
+    box-shadow: $shadow-sm;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: $border-radius;
+
+  th, td {
+    padding: $space-3 $space-4;
+    text-align: left;
+    border-bottom: 1px solid $gray-200;
+
+    @include mobile {
+      padding: $space-2 $space-3;
+      font-size: $font-size-sm;
+    }
+  }
+
+  th {
+    background: $gray-50;
+    font-weight: $font-weight-semibold;
+    color: $gray-700;
+  }
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow;
+  overflow: hidden;
+  transition: all $transition-normal;
+
+  @include mobile {
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+
+    @include mobile {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.card-header {
+  background: $gray-50;
+  border-bottom: 1px solid $gray-200;
+  
+  @include card-responsive($space-4, $space-5, $space-6);
+}
+
+.card-body {
+  @include card-responsive($space-4, $space-5, $space-6);
+}
+
+.card-footer {
+  background: $gray-50;
+  border-top: 1px solid $gray-200;
+  
+  @include card-responsive($space-4, $space-5, $space-6);
+}
+
+/* Utilities */
+.container {
+  @include container;
+}
+
+.container-sm {
+  @include container($container-sm);
+}
+
+.container-md {
+  @include container($container-md);
+}
+
+.container-lg {
+  @include container($container-lg);
+}
+
+.container-xl {
+  @include container($container-xl);
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 $space-5;
+
+  @include mobile {
+    padding: 0 $space-3;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+
+  @include mobile {
+    text-align: center;
+  }
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-grid {
+  display: grid !important;
+}
+
+@include mobile {
+  .d-mobile-none {
+    display: none !important;
+  }
+
+  .d-mobile-block {
+    display: block !important;
+  }
+
+  .d-mobile-flex {
+    display: flex !important;
+  }
+
+  .d-mobile-grid {
+    display: grid !important;
+  }
+}
+
+@include tablet-up {
+  .d-tablet-none {
+    display: none !important;
+  }
+
+  .d-tablet-block {
+    display: block !important;
+  }
+
+  .d-tablet-flex {
+    display: flex !important;
+  }
+
+  .d-tablet-grid {
+    display: grid !important;
+  }
+}
+
+/* Loading spinner */
+.loading-spinner {
+  margin: 0 auto;
+  @include loading-spinner;
+}
+
+/* Responsive grid system */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-$space-3);
+
+  @include mobile {
+    margin: 0 (-$space-2);
+  }
+}
+
+.col {
+  flex: 1;
+  padding: 0 $space-3;
+
+  @include mobile {
+    padding: 0 $space-2;
+  }
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 0 0 math.percentage(math.div($i, 12));
+    max-width: math.percentage(math.div($i, 12));
+    padding: 0 $space-3;
+
+    @include mobile {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 0 $space-2;
+    }
+  }
+}
+
+@include tablet-up {
+  @for $i from 1 through 12 {
+    .col-md-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+@include desktop {
+  @for $i from 1 through 12 {
+    .col-lg-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+/* Spacing utilities */
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $size, $length in (0: 0, 1: $space-1, 2: $space-2, 3: $space-3, 4: $space-4, 5: $space-5, 6: $space-6) {
+    .#{$abbrev}-#{$size} { #{$prop}: $length !important; }
+    .#{$abbrev}t-#{$size} { #{$prop}-top: $length !important; }
+    .#{$abbrev}r-#{$size} { #{$prop}-right: $length !important; }
+    .#{$abbrev}b-#{$size} { #{$prop}-bottom: $length !important; }
+    .#{$abbrev}l-#{$size} { #{$prop}-left: $length !important; }
+    .#{$abbrev}x-#{$size} { #{$prop}-left: $length !important; #{$prop}-right: $length !important; }
+    .#{$abbrev}y-#{$size} { #{$prop}-top: $length !important; #{$prop}-bottom: $length !important; }
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+
+  @include mobile {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: $gray-100;
+  border-radius: $border-radius;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray-400;
+  border-radius: $border-radius;
+
+  &:hover {
+    background: $gray-500;
+  }
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .btn, .card {
+    border: 1px solid $gray-400;
+  }
+
+  .d-print-none {
+    display: none !important;
+  }
+}

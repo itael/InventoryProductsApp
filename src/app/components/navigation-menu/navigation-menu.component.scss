@@ -1,0 +1,405 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.navigation-menu {
+  height: 100%;
+  background: $color-white;
+  border-right: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: $shadow-xl;
+
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
+
+  @include tablet-up {
+    position: relative;
+    transform: none;
+    width: 250px;
+  }
+
+  @include desktop {
+    width: 280px;
+  }
+
+  .menu-header {
+    padding: $space-6 $space-4;
+    border-bottom: 1px solid $color-border;
+
+    @include mobile {
+      padding: $space-4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $color-primary;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+
+      @include mobile {
+        font-size: $font-size-lg;
+      }
+
+      i {
+        font-size: 1.5em;
+      }
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: $font-size-xl;
+      color: $color-text-secondary;
+      cursor: pointer;
+      padding: $space-1;
+      
+      @include mobile {
+        display: block;
+      }
+
+      &:hover {
+        color: $color-text;
+      }
+    }
+  }
+
+  .menu-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-4 0;
+
+    @include mobile {
+      padding-bottom: $space-6;
+    }
+  }
+
+  .menu-section {
+    margin-bottom: $space-6;
+
+    .section-title {
+      padding: 0 $space-4 $space-2;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      @include mobile {
+        font-size: $font-size-sm;
+      }
+    }
+
+    .menu-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .menu-item {
+    display: block;
+    padding: $space-3 $space-4;
+    color: $color-text;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+
+    @include mobile {
+      padding: $space-4;
+      font-size: $font-size-base;
+      min-height: 48px;
+    }
+
+    i {
+      width: 20px;
+      text-align: center;
+      font-size: $font-size-lg;
+      color: $color-text-secondary;
+      transition: color 0.2s ease;
+    }
+
+    .menu-text {
+      flex: 1;
+    }
+
+    .badge {
+      background: $color-secondary;
+      color: $color-white;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    &:hover {
+      background: $color-bg-hover;
+      border-left-color: $color-primary;
+
+      i {
+        color: $color-primary;
+      }
+    }
+
+    &.active {
+      background: rgba($color-primary, 0.1);
+      border-left-color: $color-primary;
+      color: $color-primary;
+
+      i {
+        color: $color-primary;
+      }
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: -2px;
+    }
+  }
+
+  .menu-footer {
+    padding: $space-4;
+    border-top: 1px solid $color-border;
+
+    @include mobile {
+      padding: $space-6 $space-4;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: $space-3;
+      padding: $space-3;
+      border-radius: $border-radius;
+      background: $color-bg-secondary;
+
+      @include mobile {
+        padding: $space-4;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: $color-primary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-white;
+        font-weight: $font-weight-semibold;
+        flex-shrink: 0;
+
+        @include mobile {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      .user-details {
+        flex: 1;
+        min-width: 0;
+
+        .user-name {
+          font-weight: $font-weight-semibold;
+          color: $color-text;
+          font-size: $font-size-sm;
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .user-role {
+          font-size: $font-size-xs;
+          color: $color-text-secondary;
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .logout-btn {
+        background: none;
+        border: none;
+        color: $color-text-secondary;
+        cursor: pointer;
+        padding: $space-1;
+        border-radius: $border-radius-sm;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+
+        @include mobile {
+          padding: $space-2;
+        }
+
+        i {
+          font-size: $font-size-base;
+        }
+
+        &:hover {
+          color: $color-danger;
+          background: rgba($color-danger, 0.1);
+        }
+      }
+    }
+  }
+
+  .quick-actions {
+    padding: $space-2 $space-4 $space-4;
+
+    .section-title {
+      padding: 0 0 $space-2;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: $space-2;
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $space-2;
+
+      @include mobile {
+        grid-template-columns: 1fr;
+        gap: $space-3;
+      }
+    }
+
+    .quick-action-btn {
+      background: $color-white;
+      border: 1px solid $color-border;
+      border-radius: $border-radius;
+      padding: $space-3;
+      text-align: center;
+      text-decoration: none;
+      color: $color-text;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-medium;
+      transition: all 0.2s ease;
+
+      @include mobile {
+        padding: $space-4;
+        font-size: $font-size-sm;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $space-2;
+      }
+
+      i {
+        display: block;
+        margin-bottom: $space-1;
+        font-size: $font-size-lg;
+        color: $color-text-secondary;
+
+        @include mobile {
+          margin-bottom: 0;
+          font-size: $font-size-xl;
+        }
+      }
+
+      &:hover {
+        background: $color-bg-hover;
+        border-color: $color-primary;
+        transform: translateY(-1px);
+
+        i {
+          color: $color-primary;
+        }
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Mobile overlay
+.mobile-overlay {
+  display: none;
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+// Responsive adjustments
+@include mobile-sm {
+  .navigation-menu {
+    width: 100vw;
+
+    .menu-item {
+      font-size: $font-size-lg;
+      padding: $space-5;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .navigation-menu {
+    border-right-width: 2px;
+
+    .menu-item {
+      border-left-width: 4px;
+
+      &:focus {
+        outline-width: 3px;
+      }
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .navigation-menu,
+  .menu-item,
+  .quick-action-btn,
+  .mobile-overlay {
+    transition: none;
+  }
+}

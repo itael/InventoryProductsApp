@@ -1,0 +1,66 @@
+<div class="login-container">
+  <!-- Language Selector -->
+  <div class="language-selector-wrapper">
+    <app-language-selector></app-language-selector>
+  </div>
+
+  <div class="login-card">
+    <div class="login-header">
+      <h1>{{ 'login.title' | translate }}</h1>
+      <p>{{ 'login.subtitle' | translate }}</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">{{ 'login.username' | translate }}</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          class="form-control"
+          [class.error]="getFieldError('username')"
+          placeholder="Enter your username"
+        />
+        <span class="error-message" *ngIf="getFieldError('username')">
+          {{ getFieldError('username') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'login.password' | translate }}</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [class.error]="getFieldError('password')"
+          placeholder="Enter your password"
+        />
+        <span class="error-message" *ngIf="getFieldError('password')">
+          {{ getFieldError('password') }}
+        </span>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button 
+        type="submit" 
+        class="login-btn" 
+        [disabled]="isLoading"
+        [class.loading]="isLoading"
+      >
+        <span *ngIf="!isLoading">{{ 'login.signin' | translate }}</span>
+        <span *ngIf="isLoading">Signing in...</span>
+      </button>
+    </form>
+
+    <div class="demo-credentials">
+      <h4>{{ 'login.demo.credentials' | translate }}</h4>
+      <p><strong>Admin:</strong> admin / admin123</p>
+      <p><strong>Manager:</strong> manager / manager123</p>
+      <p><strong>Employee:</strong> employee / employee123</p>
+    </div>
+  </div>
+</div>

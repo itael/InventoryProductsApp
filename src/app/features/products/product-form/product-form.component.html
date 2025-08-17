@@ -1,0 +1,182 @@
+<div class="product-form-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>{{ isEditMode ? ('products.editProduct' | translate) : ('products.addNewProduct' | translate) }}</h1>
+      <a routerLink="/products" class="btn btn-secondary">← {{ 'products.backToProducts' | translate }}</a>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p>{{ isEditMode ? ('products.loadingProduct' | translate) : ('products.savingProduct' | translate) }}</p>
+  </div>
+
+  <!-- Form -->
+  <div class="form-section" *ngIf="!isLoading">
+    <div class="form-card">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Product Details Section -->
+        <div class="form-section-header">
+          <h3>🍦 {{ 'products.productDetails' | translate }}</h3>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">{{ 'products.productName' | translate }} *</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              class="form-control"
+              [class.error]="getFieldError('name')"
+              [placeholder]="'products.namePlaceholder' | translate"
+            />
+            <span class="error-message" *ngIf="getFieldError('name')">
+              {{ getFieldError('name') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="account">{{ 'products.accountCode' | translate }} *</label>
+            <input
+              id="account"
+              type="text"
+              formControlName="account"
+              class="form-control"
+              [class.error]="getFieldError('account')"
+              [placeholder]="'products.accountPlaceholder' | translate"
+            />
+            <span class="error-message" *ngIf="getFieldError('account')">
+              {{ getFieldError('account') }}
+            </span>
+            <span class="help-text">{{ 'products.accountFormat' | translate }}</span>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">{{ 'products.description' | translate }} *</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="form-control"
+            [class.error]="getFieldError('description')"
+            [placeholder]="'products.descriptionPlaceholder' | translate"
+            rows="3"
+          ></textarea>
+          <span class="error-message" *ngIf="getFieldError('description')">
+            {{ getFieldError('description') }}
+          </span>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="form-section-header">
+          <h3>💰 {{ 'products.pricingInformation' | translate }}</h3>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="originalPrice">Original Price *</label>
+            <div class="input-group">
+              <span class="input-prefix">$</span>
+              <input
+                id="originalPrice"
+                type="number"
+                step="0.01"
+                formControlName="originalPrice"
+                class="form-control"
+                [class.error]="getFieldError('originalPrice')"
+                placeholder="0.00"
+              />
+            </div>
+            <span class="error-message" *ngIf="getFieldError('originalPrice')">
+              {{ getFieldError('originalPrice') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="discount">Discount *</label>
+            <div class="input-group">
+              <input
+                id="discount"
+                type="number"
+                step="0.1"
+                formControlName="discount"
+                class="form-control"
+                [class.error]="getFieldError('discount')"
+                placeholder="0"
+                min="0"
+                max="100"
+              />
+              <span class="input-suffix">%</span>
+            </div>
+            <span class="error-message" *ngIf="getFieldError('discount')">
+              {{ getFieldError('discount') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="unitOfMeasurement">Unit of Measurement *</label>
+            <select
+              id="unitOfMeasurement"
+              formControlName="unitOfMeasurement"
+              class="form-control"
+              [class.error]="getFieldError('unitOfMeasurement')"
+            >
+              <option value="">Select unit...</option>
+              <option *ngFor="let unit of unitOptions" [value]="unit">
+                {{ unit | titlecase }}
+              </option>
+            </select>
+            <span class="error-message" *ngIf="getFieldError('unitOfMeasurement')">
+              {{ getFieldError('unitOfMeasurement') }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Price Preview -->
+        <div class="price-preview" *ngIf="productForm.get('originalPrice')?.value && productForm.get('discount')?.value">
+          <div class="preview-card">
+            <h4>💡 Price Preview</h4>
+            <div class="price-breakdown">
+              <div class="price-item">
+                <span>Original Price:</span>
+                <span class="original">${{ productForm.get('originalPrice')?.value | number:'1.2-2' }}</span>
+              </div>
+              <div class="price-item">
+                <span>Discount ({{ productForm.get('discount')?.value }}%):</span>
+                <span class="discount">-${{ (productForm.get('originalPrice')?.value * productForm.get('discount')?.value / 100) | number:'1.2-2' }}</span>
+              </div>
+              <div class="price-item final">
+                <span>Final Price:</span>
+                <span class="final-price">${{ calculatePrice() | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!productForm.valid || isLoading"
+          >
+            {{ isEditMode ? '💾 Update Product' : '➕ Create Product' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancel()"
+            [disabled]="isLoading"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

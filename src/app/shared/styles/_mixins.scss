@@ -1,0 +1,251 @@
+@use 'sass:map';
+
+// Breakpoints
+$breakpoints: (
+  mobile-sm: 320px,
+  mobile: 480px,
+  mobile-lg: 640px,
+  tablet: 768px,
+  tablet-lg: 1024px,
+  desktop: 1200px,
+  desktop-lg: 1400px,
+  desktop-xl: 1600px
+);
+
+// Media query mixins
+@mixin mobile {
+  @media (max-width: #{map.get($breakpoints, tablet) - 1px}) {
+    @content;
+  }
+}
+
+@mixin mobile-sm {
+  @media (max-width: #{map.get($breakpoints, mobile-sm)}) {
+    @content;
+  }
+}
+
+@mixin mobile-lg {
+  @media (max-width: #{map.get($breakpoints, mobile-lg)}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{map.get($breakpoints, tablet)}) and (max-width: #{map.get($breakpoints, tablet-lg) - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{map.get($breakpoints, tablet)}) {
+    @content;
+  }
+}
+
+@mixin tablet-lg {
+  @media (min-width: #{map.get($breakpoints, tablet-lg)}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{map.get($breakpoints, desktop)}) {
+    @content;
+  }
+}
+
+@mixin desktop-lg {
+  @media (min-width: #{map.get($breakpoints, desktop-lg)}) {
+    @content;
+  }
+}
+
+@mixin desktop-xl {
+  @media (min-width: #{map.get($breakpoints, desktop-xl)}) {
+    @content;
+  }
+}
+
+// Flexible grid mixin
+@mixin grid-responsive($mobile-cols: 1, $tablet-cols: 2, $desktop-cols: 3, $gap: 20px) {
+  & {
+    display: grid;
+    gap: $gap;
+    grid-template-columns: repeat($mobile-cols, 1fr);
+  }
+
+  @include tablet {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+  }
+}
+
+// Container mixin
+@mixin container($max-width: 1200px, $padding: 20px) {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $padding;
+
+  @include mobile {
+    padding: 0 15px;
+  }
+
+  @include mobile-lg {
+    padding: 0 10px;
+  }
+}
+
+// Card responsive mixin
+@mixin card-responsive($padding-mobile: 15px, $padding-tablet: 20px, $padding-desktop: 25px) {
+  padding: $padding-desktop;
+
+  @include tablet {
+    padding: $padding-tablet;
+  }
+
+  @include mobile {
+    padding: $padding-mobile;
+  }
+}
+
+// Button responsive mixin
+@mixin button-responsive {
+  padding: 12px 24px;
+  font-size: 1rem;
+
+  @include tablet {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  @include mobile {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+// Text responsive mixin
+@mixin text-responsive($desktop-size: 1rem, $tablet-size: 0.95rem, $mobile-size: 0.9rem) {
+  font-size: $desktop-size;
+
+  @include tablet {
+    font-size: $tablet-size;
+  }
+
+  @include mobile {
+    font-size: $mobile-size;
+  }
+}
+
+// Header responsive mixin
+@mixin header-responsive {
+  .header-content {
+    @include container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include mobile {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+
+      @include tablet {
+        font-size: 1.8rem;
+      }
+
+      @include mobile {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+// Form responsive mixin
+@mixin form-responsive {
+  .form-row {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+
+    @include mobile {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}
+
+// Loading spinner mixin
+@mixin loading-spinner($size: 40px, $border-width: 4px) {
+  width: $size;
+  height: $size;
+  border: $border-width solid #f3f3f3;
+  border-top: $border-width solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @include mobile {
+    width: $size * 0.8;
+    height: $size * 0.8;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Flexbox utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Spacing utilities
+@mixin spacing($property, $desktop: 20px, $tablet: 15px, $mobile: 10px) {
+  #{$property}: $desktop;
+
+  @include tablet {
+    #{$property}: $tablet;
+  }
+
+  @include mobile {
+    #{$property}: $mobile;
+  }
+}
