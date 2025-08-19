@@ -56,36 +56,6 @@
       </div>
     </div>
 
-    <!-- Recent Products -->
-    <div class="recent-products" *ngIf="recentProducts$ | async as products">
-      <h2>{{ 'dashboard.recent.products' | translate }}</h2>
-      <div class="products-table">
-        <div class="table-header">
-          <div class="col">{{ 'fields.name' | translate }}</div>
-          <div class="col">{{ 'fields.price' | translate }}</div>
-          <div class="col">Discount</div>
-          <div class="col">{{ 'fields.unit' | translate }}</div>
-          <div class="col">{{ 'fields.actions' | translate }}</div>
-        </div>
-        
-        <div class="table-row" *ngFor="let product of products">
-          <div class="col">{{ product.name }}</div>
-          <div class="col">${{ product.price | number:'1.2-2' }}</div>
-          <div class="col">{{ product.discount }}%</div>
-          <div class="col">{{ product.unitOfMeasurement }}</div>
-          <div class="col">
-            <a [routerLink]="['/products', product.id]" class="btn-view">{{ 'actions.view' | translate }}</a>
-            <a [routerLink]="['/products', product.id, 'edit']" class="btn-edit"
-               *ngIf="(hasPermission('products_write') | async)">{{ 'actions.edit' | translate }}</a>
-          </div>
-        </div>
-        
-        <div class="table-empty" *ngIf="products.length === 0">
-          <p>{{ 'products.empty.title' | translate }}</p>
-        </div>
-      </div>
-    </div>
-
     <!-- Quick Actions -->
     <div class="quick-actions">
       <h2>{{ 'dashboard.quick.actions' | translate }}</h2>

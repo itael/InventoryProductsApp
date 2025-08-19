@@ -32,7 +32,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('ProductListComponent initialized');
     this.loadProducts();
+    
+    // Debug: Verificar si tenemos productos inmediatamente
+    this.products$.subscribe(products => {
+      console.log('Products received:', products);
+      console.log('Number of products:', products ? products.length : 0);
+    });
   }
 
   ngOnDestroy(): void {
